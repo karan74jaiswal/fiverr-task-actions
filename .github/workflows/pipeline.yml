@@ -19,9 +19,13 @@ jobs:
           aws eks update-kubeconfig --name eks-cluster-test
       - name: Install kubectl
         run: |
-          curl -LO "https://dl.k8s.io/release/v1.25.0/bin/linux/amd64/kubectl"
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           chmod +x kubectl
           mv kubectl /usr/local/bin/
+      - name: Set kubectl version
+        run: |
+          sudo snap install kubectl --classic
+          sudo snap switch kubectl --channel=1.25/stable
       - name: Deploy NGINX resources
         run: |
           kubectl apply -f nginx-pod.yml
