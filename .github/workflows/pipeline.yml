@@ -1,0 +1,24 @@
+name: Deploy to EKS
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    container:
+      image: amazon/aws-cli:2.3.1
+    steps:
+      - name: Configure AWS credentials
+        env:
+          AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAJ66PXGU2
+          AWS_SECRET_ACCESS_KEY: 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
+          AWS_DEFAULT_REGION: us-west-2
+        run: |
+          aws eks update-kubeconfig --name eks-cluster-test
+      - name: Deploy NGINX resources
+        run: |
+          kubectl apply -f nginx-pod.yml
+          kubectl apply -f nginx-service.yml
+          kubectl apply -f nginx-replicaset.yml
+          kubectl apply -f nginx-deployment.yml
