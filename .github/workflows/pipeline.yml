@@ -91,10 +91,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Install AWS CLI
-        uses: aws/install-aws-cli@v2
       - name: Configure AWS credentials
         run: |
           aws configure set aws_access_key_id AKIAQ5ZFAJFAJ66PXGU2
