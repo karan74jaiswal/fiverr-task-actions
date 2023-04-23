@@ -24,8 +24,8 @@ jobs:
           mv kubectl /usr/local/bin/
       - name: Set kubectl version
         run: |
-          sudo snap install kubectl --classic
-          sudo snap switch kubectl --channel=1.25/stable
+          snap install kubectl --classic
+          snap switch kubectl --channel=1.25/stable
       - name: Deploy NGINX resources
         run: |
           kubectl apply -f nginx-pod.yml
