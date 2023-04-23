@@ -1,71 +1,19 @@
-# name: Deploy to EKS
-# on:
-#   push:
-#     branches:
-#       - master
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Configure AWS credentials
-#         env:
-#           AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAJ66PXGU2
-#           AWS_SECRET_ACCESS_KEY: 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
-#           AWS_DEFAULT_REGION: us-west-2
-#         run: |
-#           aws eks update-kubeconfig --name eks-cluster-test --region us-west-2
-#       - name: Install kubectl
-#         run: |
-#           sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2 curl
-#           curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-#           echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-#           sudo apt-get update
-#           sudo apt-get install -y kubectl
-#       - name: Authenticate with EKS cluster
-#         id: eks_auth
-#         uses: aws-actions/amazon-eks-authenticator@v0.5.0
-#         with:
-#           aws-region: us-west-2
-#           cluster-name: eks-cluster-test
-#           issuer-url: https://oidc.eks.us-west-2.amazonaws.com/id/E0342F2D07A2EBE43028B8F2627AEAD1
-#           client-id: eks-auth-99
-
-#       - name: Deploy NGINX resources
-#         env:
-#           AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAJ66PXGU2
-#           AWS_SECRET_ACCESS_KEY: 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
-#           AWS_DEFAULT_REGION: us-west-2
-#         run: |
-#           kubectl get pods
-#           kubectl apply -f nginx-pod.yml
-#           kubectl apply -f nginx-service.yml
-#           kubectl apply -f nginx-replicaset.yml
-#           kubectl apply -f nginx-deployment.yml
-
-#########################################
-
 name: Deploy to EKS
-
 on:
   push:
     branches:
       - master
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: AKIAQ5ZFAJFAJ66PXGU2
-          aws-secret-access-key: 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
-          aws-region: us-west-2
-
+        env:
+          AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAJ66PXGU2
+          AWS_SECRET_ACCESS_KEY: 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
+          AWS_DEFAULT_REGION: us-west-2
+        run: |
+          aws eks update-kubeconfig --name eks-cluster-test --region us-west-2
       - name: Install kubectl
         run: |
           sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2 curl
@@ -73,16 +21,26 @@ jobs:
           echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
           sudo apt-get update
           sudo apt-get install -y kubectl
-
-      - name: Authenticate with EKS cluster
-        uses: aws-actions/amazon-eks-authenticator@v0.5.0
-        with:
-          cluster-name: eks-cluster-test
-          region: us-west-2
+      #  - name: Authenticate with EKS cluster
+      #    id: eks_auth
+      #    uses: aws-actions/amazon-eks-authenticator@v0.5.0
+      #    with:
+      #      aws-region: us-west-2
+      #      cluster-name: eks-cluster-test
+      #      issuer-url: https://oidc.eks.us-west-2.amazonaws.com/id/E0342F2D07A2EBE43028B8F2627AEAD1
+      #      client-id: eks-auth-99
 
       - name: Deploy NGINX resources
+        env:
+          AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAJ66PXGU2
+          AWS_SECRET_ACCESS_KEY: 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
+          AWS_DEFAULT_REGION: us-west-2
         run: |
+          kubectl get pods
           kubectl apply -f nginx-pod.yml
           kubectl apply -f nginx-service.yml
           kubectl apply -f nginx-replicaset.yml
           kubectl apply -f nginx-deployment.yml
+
+#########################################
+
