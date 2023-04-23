@@ -8,10 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: amazon/aws-cli:2.3.1
-      volumes:
-        - name: shared-data
-          emptyDir: {}
-      command: ["sleep", "infinity"]
+
     steps:
       - name: Configure AWS credentials
         env:
