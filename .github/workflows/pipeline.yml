@@ -121,17 +121,17 @@ jobs:
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
           kubectl version --client
 
-          ###############################minikube####################################
+          # ###############################minikube####################################
 
 
-          curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+          # curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
 
 
-          ########################start minikube####################################
+          # ########################start minikube####################################
 
-          sudo minikube start --driver=docker --force
+          # sudo minikube start --driver=docker --force
 
-          ############################################################
+          # ############################################################
 
 
 
@@ -159,14 +159,10 @@ jobs:
 
           export KUBECONFIG=$KUBECONFIG:~/.kube/config
 
-          echo 'export KUBECONFIG=$KUBECONFIG:~/.kube/config' >> ~/.bashrc
 
 
-
-
-
-          aws eks update-kubeconfig --name eks-cluster-test --region us-west-2
-          kubectl config use-context arn:aws:eks:us-west-2:063965251904:cluster/eks-cluster-test
+          aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 --kubeconfig ~/.kube
+          kubectl config use-context eks-cluster-test
           kubectl get nodes
       - name: Deploy to EKS cluster
         run: |
