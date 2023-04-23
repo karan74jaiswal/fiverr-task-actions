@@ -93,6 +93,9 @@ jobs:
     steps:
       - name: Configure AWS credentials
         run: |
+          sudo apt-get update
+          sudo apt-get install awscli -y
+
           aws configure set aws_access_key_id AKIAQ5ZFAJFAJ66PXGU2
           aws configure set aws_secret_access_key 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
           aws configure set default.region us-west-2
