@@ -18,7 +18,7 @@ jobs:
           aws eks update-kubeconfig --name eks-cluster-test
       - name: Deploy NGINX resources
         run: |
-          kubectl apply -f nginx-pod.yml
-          kubectl apply -f nginx-service.yml
-          kubectl apply -f nginx-replicaset.yml
-          kubectl apply -f nginx-deployment.yml
+          kubectl apply -f ../nginx-pod.yml
+          kubectl apply -f ../nginx-service.yml
+          kubectl apply -f ../nginx-replicaset.yml
+          kubectl apply -f ../nginx-deployment.yml
