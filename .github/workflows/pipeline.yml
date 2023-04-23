@@ -22,6 +22,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y kubectl
       - name: Deploy NGINX resources
+        env:
+          AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAJ66PXGU2
+          AWS_SECRET_ACCESS_KEY: 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
+          AWS_DEFAULT_REGION: us-west-2
         run: |
           kubectl apply -f nginx-pod.yml
           kubectl apply -f nginx-service.yml
