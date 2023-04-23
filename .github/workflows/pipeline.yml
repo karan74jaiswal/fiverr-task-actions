@@ -51,15 +51,15 @@ on:
     branches:
       - master
 
+env:
+  AWS_REGION: us-west-2
+  AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAJ66PXGU2
+  AWS_SECRET_ACCESS_KEY: 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
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS credentials
-        run: |
-          aws configure set aws_access_key_id AKIAQ5ZFAJFAJ66PXGU2
-          aws configure set aws_secret_access_key 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
-          aws configure set default.region us-west-2
       - name: Update Kubectl Config
         run: |
           aws eks update-kubeconfig --name eks-cluster-test --region us-west-2
@@ -72,9 +72,6 @@ jobs:
           sudo apt-get install -y kubectl
       - name: Deploy NGINX resources
         run: |
-          aws configure set aws_access_key_id AKIAQ5ZFAJFAJ66PXGU2
-          aws configure set aws_secret_access_key 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
-          aws configure set region us-west-2
           kubectl apply -f nginx-pod.yml
           kubectl apply -f nginx-service.yml
           kubectl apply -f nginx-replicaset.yml
