@@ -6,9 +6,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    container:
-      image: amazon/aws-cli:2.3.1
-
     steps:
       - name: Configure AWS credentials
         env:
@@ -19,13 +16,11 @@ jobs:
           aws eks update-kubeconfig --name eks-cluster-test
       - name: Install kubectl
         run: |
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          chmod +x kubectl
-          mv kubectl /usr/local/bin/
-      - name: Set kubectl version
-        run: |
-          snap install kubectl --classic
-          snap switch kubectl --channel=1.25/stable
+          apt-get update && sudo apt-get install -y apt-transport-https gnupg2 curl
+          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+          echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+          apt-get update
+          apt-get install -y kubectl
       - name: Deploy NGINX resources
         run: |
           kubectl apply -f nginx-pod.yml
