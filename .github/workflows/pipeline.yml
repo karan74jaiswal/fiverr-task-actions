@@ -1,39 +1,3 @@
-# name: Deploy to EKS
-# on:
-#   push:
-#     branches:
-#       - master
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Configure AWS credentials
-#         env:
-#           AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAJ66PXGU2
-#           AWS_SECRET_ACCESS_KEY: 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
-#           AWS_DEFAULT_REGION: us-west-2
-#         run: |
-#           aws eks update-kubeconfig --name eks-cluster-test
-#       - name: Install kubectl
-#         run: |
-#           sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2 curl
-#           curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-#           echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-#           sudo apt-get update
-#           sudo apt-get install -y kubectl
-#       - name: Deploy NGINX resources
-#         env:
-#           AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAJ66PXGU2
-#           AWS_SECRET_ACCESS_KEY: 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
-#           AWS_DEFAULT_REGION: us-west-2
-#         run: |
-#           kubectl apply -f nginx-pod.yml
-#           kubectl apply -f nginx-service.yml
-#           kubectl apply -f nginx-replicaset.yml
-#           kubectl apply -f nginx-deployment.yml
-
-###############################################
-
 name: Deploy to EKS
 on:
   push:
@@ -57,15 +21,13 @@ jobs:
           echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
           sudo apt-get update
           sudo apt-get install -y kubectl
-      - name: Configure kubectl
-        run: |
-          mkdir -p ~/.kube
-          aws eks update-kubeconfig --name eks-cluster-test --kubeconfig ~/.kube/config
       - name: Deploy NGINX resources
+        env:
+          AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAJ66PXGU2
+          AWS_SECRET_ACCESS_KEY: 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
+          AWS_DEFAULT_REGION: us-west-2
         run: |
           kubectl apply -f nginx-pod.yml
           kubectl apply -f nginx-service.yml
           kubectl apply -f nginx-replicaset.yml
           kubectl apply -f nginx-deployment.yml
-        env:
-          KUBECONFIG: ~/.kube/config
