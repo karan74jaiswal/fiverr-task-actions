@@ -13,7 +13,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: dUMUsFooEnUo9Dj9/ZFsq//E9h+TUiTFIiahJFQX
           AWS_DEFAULT_REGION: us-west-2
         run: |
-          aws eks update-kubeconfig --name eks-cluster-test
+          aws eks update-kubeconfig --name eks-cluster-test --region us-west-2
       - name: Install kubectl
         run: |
           sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2 curl
@@ -27,6 +27,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: dUMUsFooEnUo9Dj9/ZFsq//E9h+TUiTFIiahJFQX
           AWS_DEFAULT_REGION: us-west-2
         run: |
+          kubectl get pods
           kubectl apply -f nginx-pod.yml
           kubectl apply -f nginx-service.yml
           kubectl apply -f nginx-replicaset.yml
