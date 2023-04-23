@@ -122,7 +122,7 @@ jobs:
           kubectl version --client
 
 
-
+          #############################################################
 
 
 
@@ -146,9 +146,7 @@ jobs:
 
           export KUBECONFIG=$KUBECONFIG:~/.kube/config
 
-          aws configure set aws_access_key_id AKIAQ5ZFAJFAN77HRGME
-          aws configure set aws_secret_access_key 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
-          aws configure set default.region us-west-2         
+                 
 
           sudo aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 --kubeconfig ~/.kube
           kubectl config use-context eks-cluster-test
