@@ -125,9 +125,6 @@ jobs:
 
 
 
-          aws configure set aws_access_key_id AKIAQ5ZFAJFAJ66PXGU2
-          aws configure set aws_secret_access_key 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
-          aws configure set default.region us-west-2
 
           export region_code=us-west-2
           export cluster_name=eks-cluster-test
@@ -149,7 +146,9 @@ jobs:
 
           export KUBECONFIG=$KUBECONFIG:~/.kube/config
 
-
+          aws configure set aws_access_key_id AKIAQ5ZFAJFAJ66PXGU2
+          aws configure set aws_secret_access_key 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
+          aws configure set default.region us-west-2         
 
           sudo aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 --kubeconfig ~/.kube
           kubectl config use-context eks-cluster-test
