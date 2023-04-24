@@ -257,12 +257,16 @@ jobs:
           aws-secret-access-key: MrjmqEs0EF8M1ek+M5zX/uPdufG3d2fePirrgv1e
           aws-region: us-west-2
 
+      - name: Install aws-iam-authenticator
+        run: |
+          sudo curl -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.22.0/2021-07-05/bin/linux/amd64/aws-iam-authenticator
+          sudo chmod +x /usr/local/bin/aws-iam-authenticator
+
       - name: Update kube config
         run: |
           aws eks update-kubeconfig --name eks-cluster-test
           export TOKEN=$(aws eks get-token --cluster-name eks-cluster-test --output json | jq -r '.status.token')
-          kubectl config set-credentials eks-cluster-test --token=$TOKEN
-
+          kubectl config set-credentials eks-cluster-test --token=$TOKEN --kubeconfig kubeconfig.yaml
       - name: Deploy to EKS
         run: |
           kubectl apply -f nginx-pod.yml
