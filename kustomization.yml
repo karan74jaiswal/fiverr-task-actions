@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - nginx-replicaset.yml
   - nginx-deployment.yml
+  - nginx-service.yml
