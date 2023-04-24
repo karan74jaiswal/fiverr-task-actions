@@ -282,7 +282,7 @@ jobs:
 
 
 
-          kubectl apply -f nginx-pod.yml --kubeconfig /home/runner/.kube/config
+          sudo kubectl apply -f nginx-pod.yml --kubeconfig /home/runner/.kube/config
 
 
 
