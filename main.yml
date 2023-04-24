@@ -21,8 +21,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id:
-          aws-secret-access-key:
+          aws-access-key-id: AKIAQ5ZFAJFAIJKHNVP3
+          aws-secret-access-key: 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
           aws-region: us-west-2
 
       - name: Update kube config
