@@ -264,12 +264,39 @@ jobs:
 
       - name: Update kube config
         run: |
-          aws eks update-kubeconfig --name eks-cluster-test
-          export TOKEN=$(aws eks get-token --cluster-name eks-cluster-test --output json | jq -r '.status.token')
-          kubectl config set-credentials eks-cluster-test --token=$TOKEN --kubeconfig kubeconfig.yaml
+          aws eks update-kubeconfig --name eks-cluster-test --kubeconfig kubeconfig.yaml
+          export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id --profile default)
+          export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key --profile default)
+          export AWS_SESSION_TOKEN=$(aws sts get-session-token --duration 3600 --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' --output text | tr '\t' '\n' | base64 -w 0)
+
+          kubectl config set-cluster eks-cluster-test \
+            --server=$(kubectl config view --minify | grep server | cut -f 2- -d ":" | tr -d " ") \
+            --certificate-authority=$(kubectl config view --minify | grep certificate-authority-data | cut -f 2- -d ":" | tr -d " " | base64 --decode) \
+            --kubeconfig=kubeconfig.yaml
+
+          kubectl config set-credentials eks-cluster-test \
+            --exec-command=aws \
+            --exec-arg="sts" \
+            --exec-arg="get-session-token" \
+            --exec-arg="--duration" \
+            --exec-arg="3600" \
+            --exec-arg="--profile" \
+            --exec-arg="default" \
+            --exec-arg="-o" \
+            --exec-arg="json" \
+            --exec-api-version=client.authentication.k8s.io/v1beta1 \
+            --kubeconfig=kubeconfig.yaml
+
+          kubectl config set-context eks-cluster-test \
+            --cluster=eks-cluster-test \
+            --user=eks-cluster-test \
+            --kubeconfig=kubeconfig.yaml
+
+          kubectl config use-context eks-cluster-test --kubeconfig=kubeconfig.yaml
+
       - name: Deploy to EKS
         run: |
-          kubectl apply -f nginx-pod.yml
-          kubectl apply -f nginx-service.yml
-          kubectl apply -f nginx-replicaset.yml
-          kubectl apply -f nginx-deployment.yml
+          kubectl apply -f nginx-pod.yml --kubeconfig kubeconfig.yaml
+          kubectl apply -f nginx-service.yml --kubeconfig kubeconfig.yaml
+          kubectl apply -f nginx-replicaset.yml --kubeconfig kubeconfig.yaml
+          kubectl apply -f nginx-deployment.yml --kubeconfig kubeconfig.yaml
