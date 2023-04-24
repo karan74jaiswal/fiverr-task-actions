@@ -265,15 +265,3 @@ jobs:
       - name: Deploy to EKS
         run: |
           kubectl cluster-info
-          kubectl config current-context
-          minikube status
-          kubectl get services
-          #kubectl apply -f path/to/pod.yml
-          #kubectl get pods
-          #kubectl describe pod nginx-pod
-          #kubectl logs nginx-pod
-          #kubectl apply -f path/to/service.yml
-          #kubectl get service
-          #kubectl describe nginx-service 
-          #kubectl apply -f path/to/deployment.yml
-          #kubectl apply -f path/to/replicaset.yml
