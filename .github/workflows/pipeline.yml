@@ -303,6 +303,7 @@ jobs:
 
           aws sts get-caller-identity
           aws eks update-kubeconfig --name eks-cluster-test --region us-west-2
+          kubectl get nodes
 
           # sudo kubectl apply -f nginx-pod.yml 
           # sudo kubectl apply -f nginx-service.yml 
