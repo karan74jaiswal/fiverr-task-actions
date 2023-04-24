@@ -165,12 +165,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
+        env:
+          AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAN77HRGME
+          AWS_SECRET_ACCESS_KEY: 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
+          AWS_DEFAULT_REGION: us-west-2
         run: |
           sudo apt-get update
           sudo apt-get install awscli -y
-          aws configure set aws_access_key_id AKIAQ5ZFAJFAN77HRGME
-          aws configure set aws_secret_access_key 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
-          aws configure set default.region us-west-2
       - name: Update kubeconfig
         run: |
           sudo --login
@@ -221,9 +222,7 @@ jobs:
           export KUBECONFIG=$KUBECONFIG:~/.kube/config
 
                  
-          export AWS_ACCESS_KEY_ID=AKIAQ5ZFAJFAN77HRGME
-          export AWS_SECRET_ACCESS_KEY=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
-          export AWS_DEFAULT_REGION=us-west-2
+
           sudo aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 --kubeconfig ~/.kube
           kubectl config use-context eks-cluster-test
           kubectl get nodes
@@ -233,3 +232,5 @@ jobs:
           kubectl apply -f nginx-service.yml
           kubectl apply -f nginx-replicaset.yml
           kubectl apply -f nginx-deployment.yml
+    env:
+      AWS_DEFAULT_REGION: us-west-2
