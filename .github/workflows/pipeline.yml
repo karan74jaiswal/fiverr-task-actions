@@ -253,8 +253,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: AKIARP3CHOIJHPLIXRFB
-          aws-secret-access-key: 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
+          aws-access-key-id: AKIAQ5ZFAJFAIJKHNVP3
+          aws-secret-access-key: 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
           aws-region: us-west-2
 
       - name: Install aws-iam-authenticator
