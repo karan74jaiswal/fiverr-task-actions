@@ -277,7 +277,7 @@ jobs:
 
 
 
-          AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}} AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_KEY_ID}} AWS_DEFAULT_REGION=${{secrets.AWS_REGION}} kubectl apply -f nginx-pod.yml --kubeconfig /home/runner/.kube/config
+          AWS_ACCESS_KEY_ID="AKIAQ5ZFAJFAJYK5XJBU" AWS_SECRET_ACCESS_KEY="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" AWS_DEFAULT_REGION="us-west-2" kubectl apply -f nginx-pod.yml --kubeconfig /home/runner/.kube/config
 
 
 
