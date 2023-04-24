@@ -300,8 +300,9 @@ jobs:
 
       - name: Deploy to EKS
         run: |
-          kubectl config use-context eks-cluster-test --kubeconfig kubeconfig.yaml
-          sudo kubectl apply -f nginx-pod.yml --kubeconfig=kubeconfig.yaml
-          sudo kubectl apply -f nginx-service.yml --kubeconfig=kubeconfig.yaml
-          sudo kubectl apply -f nginx-replicaset.yml --kubeconfig=kubeconfig.yaml
-          sudo kubectl apply -f nginx-deployment.yml --kubeconfig=kubeconfig.yaml
+          kubectl cluster-info
+          # kubectl config use-context eks-cluster-test --kubeconfig kubeconfig.yaml
+          # sudo kubectl apply -f nginx-pod.yml --kubeconfig=kubeconfig.yaml
+          # sudo kubectl apply -f nginx-service.yml --kubeconfig=kubeconfig.yaml
+          # sudo kubectl apply -f nginx-replicaset.yml --kubeconfig=kubeconfig.yaml
+          # sudo kubectl apply -f nginx-deployment.yml --kubeconfig=kubeconfig.yaml
