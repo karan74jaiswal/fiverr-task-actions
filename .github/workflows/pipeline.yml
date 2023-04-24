@@ -303,7 +303,7 @@ jobs:
           aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 
 
           cat /home/runner/.kube/config
-          aws sts get-caller identity
+          aws sts get-caller-identity
 
           kubectl config use-context eks-cluster-test --kubeconfig kubeconfig.yaml
           sudo kubectl apply -f nginx-pod.yml 
