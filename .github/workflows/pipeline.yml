@@ -302,6 +302,8 @@ jobs:
         run: |
           aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 
 
+          ls -la
+
           kubectl config use-context eks-cluster-test --kubeconfig kubeconfig.yaml
           sudo kubectl apply -f nginx-pod.yml --kubeconfig=kubeconfig.yaml
           sudo kubectl apply -f nginx-service.yml --kubeconfig=kubeconfig.yaml
