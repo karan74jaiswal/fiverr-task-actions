@@ -126,9 +126,7 @@ jobs:
 
           # sudo apt-get install awscli -y
 
-          aws configure set aws_access_key_id AKIAQ5ZFAJFAN77HRGME
-          aws configure set aws_secret_access_key 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
-          aws configure set default.region us-west-2
+          aws configure set aws_access_key_id AKIAQ5ZFAJFAN77HRGME &&  aws_secret_access_key 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 &&  default.region us-west-2
           export region_code=us-west-2
           export cluster_name=eks-cluster-test
           export account_id=063965251904
