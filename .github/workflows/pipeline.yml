@@ -81,7 +81,79 @@
 #           kubectl apply -f nginx-deployment.yml
 
 ##################################
-name: Deploy to EKS
+# name: Deploy to EKS
+# on:
+#   push:
+#     branches:
+#       - master
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Configure AWS credentials
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install awscli -y
+
+#           aws configure set  aws_access_key_id AKIAQ5ZFAJFAN77HRGME && aws configure set  aws_secret_access_key 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 && aws configure set default.region us-west-2
+#       - name: Update kubeconfig
+#         run: |
+#           sudo --login
+#           ###################docker###########################
+
+#           sudo apt-get update
+#           sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+#           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+#           echo \
+#             "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+#             $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+#           sudo apt-get update
+#           sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+
+#           #################INSTALL K8S###################
+#           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+#           curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+#           echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+#           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+#           kubectl version --client
+
+#           #############################################################
+
+#           export region_code=us-west-2
+#           export cluster_name=eks-cluster-test
+#           export account_id=063965251904
+
+#           cluster_endpoint=$(aws eks describe-cluster \
+#           --region $region_code \
+#           --name $cluster_name \
+#           --query "cluster.endpoint" \
+#           --output text)
+
+#           certificate_data=$(aws eks describe-cluster \
+#           --region $region_code \
+#           --name $cluster_name \
+#           --query "cluster.certificateAuthority.data" \
+#           --output text)
+
+#           mkdir -p ~/.kube
+
+#           export KUBECONFIG=$KUBECONFIG:~/.kube/config
+
+#           export AWS_ACCESS_KEY_ID=AKIAQ5ZFAJFAN77HRGME
+#           export AWS_SECRET_ACCESS_KEY=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
+#           sudo aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 --kubeconfig ~/.kube
+
+#           kubectl config use-context eks-cluster-test
+#           kubectl get nodes
+#       - name: Deploy to EKS cluster
+#         run: |
+#           kubectl apply -f nginx-pod.yml
+#           kubectl apply -f nginx-service.yml
+#           kubectl apply -f nginx-replicaset.yml
+#           kubectl apply -f nginx-deployment.yml
+
+##################################################################
+
 on:
   push:
     branches:
@@ -89,13 +161,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAN77HRGME
+      AWS_SECRET_ACCESS_KEY: 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
+      AWS_DEFAULT_REGION: us-west-2
     steps:
-      - name: Configure AWS credentials
-        run: |
-          sudo apt-get update
-          sudo apt-get install awscli -y
-
-          aws configure set  aws_access_key_id AKIAQ5ZFAJFAN77HRGME && aws configure set  aws_secret_access_key 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 && aws configure set default.region us-west-2
       - name: Update kubeconfig
         run: |
           sudo --login
@@ -122,9 +192,6 @@ jobs:
           #############################################################
 
 
-
-
-
           export region_code=us-west-2
           export cluster_name=eks-cluster-test
           export account_id=063965251904
@@ -146,10 +213,8 @@ jobs:
           export KUBECONFIG=$KUBECONFIG:~/.kube/config
 
                  
-          export AWS_ACCESS_KEY_ID=AKIAQ5ZFAJFAN77HRGME
-          export AWS_SECRET_ACCESS_KEY=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
-          sudo aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 --kubeconfig ~/.kube
 
+          sudo aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 --kubeconfig ~/.kube
           kubectl config use-context eks-cluster-test
           kubectl get nodes
       - name: Deploy to EKS cluster
