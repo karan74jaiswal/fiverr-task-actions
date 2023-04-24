@@ -154,10 +154,9 @@
 
 ##################################################################
 
-on:
-  push:
-    branches:
-      - master
+push:
+  branches:
+    - master
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -166,10 +165,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install awscli -y
-
-          export AWS_ACCESS_KEY_ID=AKIAQ5ZFAJFAN77HRGME
-          export AWS_SECRET_ACCESS_KEY=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
-          export AWS_DEFAULT_REGION=us-west-2
+          aws configure set aws_access_key_id AKIAQ5ZFAJFAN77HRGME
+          aws configure set aws_secret_access_key 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
+          aws configure set default.region us-west-2
       - name: Update kubeconfig
         run: |
           sudo --login
