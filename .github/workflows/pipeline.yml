@@ -153,8 +153,8 @@
 #           kubectl apply -f nginx-deployment.yml
 
 ##################################################################
-name: Deploy to EKS
 
+name: Deploy to EKS
 on:
   push:
     branches:
@@ -163,15 +163,20 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Configure AWS credentials
-        env:
-          AWS_ACCESS_KEY_ID: AKIAQ5ZFAJFAN77HRGME
-          AWS_SECRET_ACCESS_KEY: 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
-          AWS_DEFAULT_REGION: us-west-2
         run: |
           sudo apt-get update
           sudo apt-get install awscli -y
+
+          aws configure set aws_access_key_id AKIAQ5ZFAJFAN77HRGME
+          aws configure set aws_secret_access_key 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
+          aws configure set default.region us-west-2
+
       - name: Update kubeconfig
         run: |
           sudo --login
@@ -221,16 +226,13 @@ jobs:
 
           export KUBECONFIG=$KUBECONFIG:~/.kube/config
 
-                 
-
-          sudo aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 --kubeconfig ~/.kube
-          kubectl config use-context eks-cluster-test
+          aws eks update-kubeconfig --name $cluster_name --region $region_code --kubeconfig ~/.kube/config
+          kubectl config use-context $cluster_name
           kubectl get nodes
+
       - name: Deploy to EKS cluster
         run: |
           kubectl apply -f nginx-pod.yml
           kubectl apply -f nginx-service.yml
           kubectl apply -f nginx-replicaset.yml
           kubectl apply -f nginx-deployment.yml
-    env:
-      AWS_DEFAULT_REGION: us-west-2
