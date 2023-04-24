@@ -269,14 +269,16 @@ jobs:
 
           echo AWS_ACCESS_KEY_ID="AKIAQ5ZFAJFAJYK5XJBU" >> credentials
           echo AWS_SECRET_ACCESS_KEY="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" >> credentials
-          echo AWS_REGION="us-west-2" >> credentials
+
           cat credentials
+
+          cp credentials ~/.aws/credentials
           aws eks update-kubeconfig --name eks-cluster-test --region us-west-2
 
           cat /home/runner/.kube/config
           aws sts get-caller-identity
 
-          aws s3 ls
+          aws s3 ls --profile dev
 
           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
