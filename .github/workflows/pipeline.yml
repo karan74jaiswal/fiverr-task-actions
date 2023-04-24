@@ -226,7 +226,7 @@ jobs:
 
           export KUBECONFIG=$KUBECONFIG:~/.kube/config
 
-          sudo aws eks update-kubeconfig --name $cluster_name --region $region_code --kubeconfig $KUBE_CONFIG
+          sudo aws eks update-kubeconfig --name $cluster_name --region $region_code 
           sudo kubectl config use-context $cluster_name
           sudo kubectl get nodes
 
