@@ -261,13 +261,26 @@ jobs:
         run: |
           sudo curl -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.22.0/2021-07-05/bin/linux/amd64/aws-iam-authenticator
           sudo chmod +x /usr/local/bin/aws-iam-authenticator
+      - name: Update kubeconfig
+        run: |
+          aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster
 
       - name: Deploy to EKS
         run: |
-          kubectl cluster-info
-          kubectl config current-context
-          kubectl get services
           kubectl apply -f path/to/pod.yml
           kubectl apply -f path/to/service.yml
           kubectl apply -f path/to/deployment.yml
           kubectl apply -f path/to/replicaset.yml
+      
+      - name: Troubleshoot deployment
+        run: |
+          kubectl get pods
+          kubectl describe pod <pod-name>
+          kubectl logs <pod-name>
+          kubectl get service
+          kubectl describe service <service-name>
+
+      - name: Verify deployment
+        run: |
+          sleep 60 # Wait for resources to be deployed
+          curl http://localhost:8080 # Verify app is reachable
