@@ -303,6 +303,9 @@ jobs:
 
           aws sts get-caller-identity
           aws eks update-kubeconfig --name eks-cluster-test --region us-west-2
+          aws configure set aws_access_key_id AKIAQ5ZFAJFAJYK5XJBU
+          aws configure set aws_secret_access_key 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
+          aws configure set default.region us-west-2
           kubectl get nodes
 
           # sudo kubectl apply -f nginx-pod.yml 
