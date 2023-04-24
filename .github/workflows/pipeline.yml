@@ -244,32 +244,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v2.0
+      - name: Install kubectl and AWS CLI
+        uses: steebchen/kubectl-awscli@v0.4.0
         with:
-          version: "v1.24.0" # default is latest stable
-        id: install
+          kubectl-version: "v1.24.0" # default is latest stable
         
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: AKIAQ5ZFAJFAIJKHNVP3
-          aws-secret-access-key: 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
-          aws-region: us-west-2
-
-      - name: Install aws-iam-authenticator
         run: |
-          sudo curl -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.22.0/2021-07-05/bin/linux/amd64/aws-iam-authenticator
-          sudo chmod +x /usr/local/bin/aws-iam-authenticator
+          aws configure set aws_access_key_id AKIAQ5ZFAJFAIJKHNVP3
+          aws configure set aws_secret_access_key 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
+          aws configure set default.region us-west-2
+
 
       - name: Deploy to EKS
         run: |
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-          echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-          kubectl version --client
           aws eks update-kubeconfig --name eks-cluster-test --region us-west-2
-          kubectl config current-context
+          aws-iam-authenticator token -i eks-cluster-test | awk '{print $2}' | xargs -I {} sh -c 'kubectl config set-credentials {} --token="${1}"' -- {}
+          kubectl config set-context eks-cluster-test --cluster=eks-cluster-test --user=$(aws sts get-caller-identity --output text --query 'Arn' | awk -F/ '{print $2}') --namespace=default
+          kubectl config use-context eks-cluster-test
+          kubectl apply -f nginx-pod.yml
           kubectl apply -k k8s/
           AWS_PROFILE=default kubectl apply -f nginx-pod.yml --kubeconfig /home/runner/.kube/config
