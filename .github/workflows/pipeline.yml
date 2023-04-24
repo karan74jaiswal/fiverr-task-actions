@@ -261,9 +261,6 @@ jobs:
         run: |
           sudo curl -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.22.0/2021-07-05/bin/linux/amd64/aws-iam-authenticator
           sudo chmod +x /usr/local/bin/aws-iam-authenticator
-      - name: Update kubeconfig
-        run: |
-          aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster
 
       - name: Deploy to EKS
         run: |
