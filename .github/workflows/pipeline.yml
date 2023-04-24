@@ -303,9 +303,10 @@ jobs:
           aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 
 
           cat /home/runner/.kube/config
+          aws sts get-caller identity
 
           kubectl config use-context eks-cluster-test --kubeconfig kubeconfig.yaml
-          sudo kubectl apply -f nginx-pod.yml --kubeconfig=kubeconfig.yaml
-          sudo kubectl apply -f nginx-service.yml --kubeconfig=kubeconfig.yaml
-          sudo kubectl apply -f nginx-replicaset.yml --kubeconfig=kubeconfig.yaml
-          sudo kubectl apply -f nginx-deployment.yml --kubeconfig=kubeconfig.yaml
+          sudo kubectl apply -f nginx-pod.yml 
+          sudo kubectl apply -f nginx-service.yml 
+          sudo kubectl apply -f nginx-replicaset.yml 
+          sudo kubectl apply -f nginx-deployment.yml
