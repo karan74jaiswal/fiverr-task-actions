@@ -226,8 +226,16 @@ jobs:
 
           export KUBECONFIG=$KUBECONFIG:~/.kube/config
 
-          aws eks update-kubeconfig --name $cluster_name --region $region_code --kubeconfig ~/.kube/config
-          kubectl config use-context $cluster_name
+          aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 --kubeconfig ~/.kube/config
+
+          # Check if the context exists and switch to it
+          if kubectl config get-contexts | grep -q "eks-cluster-test"; then
+            kubectl config use-context eks-cluster-test
+          else
+            echo "Context eks-cluster-test not found"
+            exit 1
+          fi
+
           kubectl get nodes
 
       - name: Deploy to EKS cluster
