@@ -253,9 +253,9 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: AKIAQ5ZFAJFAJYK5XJBU
-          aws-secret-access-key: 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
-          aws-region: us-west-2
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_KEY_ID}}
+          aws-region: ${{secrets.AWS_REGION}}
 
       - name: Install aws-iam-authenticator
         run: |
@@ -264,20 +264,6 @@ jobs:
 
       - name: Update kube config
         run: |
-
-
-
-
-
-          export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id --profile default)
-          export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key --profile default)
-          export AWS_SESSION_TOKEN=$(aws sts get-session-token --duration 3600 --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' --output text | tr '\t' '\n' | base64 -w 0)
-
-
-
-
-
-
           aws eks update-kubeconfig --name eks-cluster-test --region us-west-2 --kubeconfig /home/runner/.kube/config
           kubectl config use-context eks-cluster-test --kubeconfig /home/runner/.kube/config
 
