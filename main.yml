@@ -31,7 +31,7 @@ jobs:
       - name: Deploy image to Amazon EKS
         run: |
           kubectl apply -f nginx-pod.yml
-          kubectl apply -f nginx-service.yml
+          kubectl apply -f nginx-deployment.yml
           kubectl port-forward nginx-pod 8080:80
           kubectl apply -f nginx-replicaset.yml
           kubectl apply -k kustomization.yml
