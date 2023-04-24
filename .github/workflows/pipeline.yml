@@ -300,6 +300,7 @@ jobs:
 
       - name: Deploy to EKS
         run: |
+          cd ..
           kubectl config set-cluster eks-cluster-test --server=https://3E51A81DD05C1ED4ABA3EB6F53CF9F3D.gr7.us-west-2.eks.amazonaws.com --kubeconfig=kubeconfig.yaml
           sudo kubectl apply -f nginx-pod.yml --kubeconfig=kubeconfig.yaml
           sudo kubectl apply -f nginx-service.yml --kubeconfig=kubeconfig.yaml
