@@ -153,10 +153,13 @@
 #           kubectl apply -f nginx-deployment.yml
 
 ##################################################################
+name: Deploy to EKS
 
-push:
-  branches:
-    - master
+on:
+  push:
+    branches:
+      - master
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
