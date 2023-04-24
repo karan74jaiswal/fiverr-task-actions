@@ -265,19 +265,11 @@ jobs:
       - name: Deploy to EKS
         run: |
           kubectl apply -f path/to/pod.yml
+          kubectl get pods
+          kubectl describe pod nginx-pod
+          kubectl logs nginx-pod
           kubectl apply -f path/to/service.yml
+          kubectl get service
+          kubectl describe nginx-service 
           kubectl apply -f path/to/deployment.yml
           kubectl apply -f path/to/replicaset.yml
-      
-      - name: Troubleshoot deployment
-        run: |
-          kubectl get pods
-          kubectl describe pod <pod-name>
-          kubectl logs <pod-name>
-          kubectl get service
-          kubectl describe service <service-name>
-
-      - name: Verify deployment
-        run: |
-          sleep 60 # Wait for resources to be deployed
-          curl http://localhost:8080 # Verify app is reachable
