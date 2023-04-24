@@ -265,6 +265,10 @@ jobs:
       - name: Update kube config
         run: |
           aws eks update-kubeconfig --name eks-cluster-test --kubeconfig kubeconfig.yaml
+
+          kubectl config set-cluster eks-cluster-test --server=https://3E51A81DD05C1ED4ABA3EB6F53CF9F3D.gr7.us-west-2.eks.amazonaws.com --kubeconfig=kubeconfig.yaml
+
+
           export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id --profile default)
           export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key --profile default)
           export AWS_SESSION_TOKEN=$(aws sts get-session-token --duration 3600 --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' --output text | tr '\t' '\n' | base64 -w 0)
