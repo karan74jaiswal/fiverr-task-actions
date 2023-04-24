@@ -274,7 +274,18 @@ jobs:
           aws sts get-caller-identity
 
 
-          sudo kubectl apply -f nginx-pod.yml --kubeconfig /home/runner/.kube/config
-          sudo kubectl apply -f nginx-service.yml --kubeconfig /home/runner/.kube/config
-          sudo kubectl apply -f nginx-replicaset.yml --kubeconfig /home/runner/.kube/config
-          sudo kubectl apply -f nginx-deployment.yml --kubeconfig /home/runner/.kube/config
+
+          AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}} AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_KEY_ID}} AWS_DEFAULT_REGION=${{secrets.AWS_REGION}} kubectl get all --all-namespaces
+
+          AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}} AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_KEY_ID}} \ AWS_DEFAULT_REGION=${{secrets.AWS_REGION}} kubectl apply -f nginx-pod.yml --kubeconfig /home/runner/.kube/config
+
+
+
+          AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}} AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_KEY_ID}} \ AWS_DEFAULT_REGION=${{secrets.AWS_REGION}}  kubectl apply -f nginx-service.yml --kubeconfig /home/runner/.kube/config
+
+
+
+          AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}} AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_KEY_ID}} \ AWS_DEFAULT_REGION=${{secrets.AWS_REGION}} kubectl apply -f nginx-replicaset.yml --kubeconfig /home/runner/.kube/config
+
+
+          AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}} AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_KEY_ID}} \ AWS_DEFAULT_REGION=${{secrets.AWS_REGION}} kubectl apply -f nginx-deployment.yml --kubeconfig /home/runner/.kube/config
