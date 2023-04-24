@@ -264,6 +264,9 @@ jobs:
 
       - name: Deploy to EKS
         run: |
+          kubectl cluster-info
+          kubectl config current-context
+          kubectl get services
           kubectl apply -f path/to/pod.yml
           kubectl apply -f path/to/service.yml
           kubectl apply -f path/to/deployment.yml
