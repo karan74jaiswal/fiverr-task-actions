@@ -1,0 +1,23 @@
+name: continous-deployment
+run-name: Continous Deployment
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: false
+
+jobs:
+  stg:
+    uses: lindy-ai/lindy.ai/.github/workflows/build-and-deploy.yml@main
+    with:
+      env: stg
+    secrets: inherit
+
+  e2e:
+    needs: [manual]
+    uses: lindy-ai/lindy.ai/.github/workflows/e2e.yml@Playwright
